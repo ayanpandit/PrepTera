@@ -101,7 +101,12 @@ const Setup = ({ onStartInterview, onNavigateHome }) => {
   const isFormValid = selectedJobRole && selectedDomain && selectedInterviewType;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200">
+    <div className="min-h-screen">
+      <div
+        className="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-10"
+        style={{ backgroundImage: "url('/logo.png')" }}
+      ></div>
+
       <Navbar currentPage="setup" onNavigateToHome={onNavigateHome} onNavigateToSetup={() => {}} />
       
       {/* Hero Section */}

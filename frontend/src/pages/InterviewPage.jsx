@@ -215,7 +215,7 @@ const InterviewPage = ({ interviewConfig, onFinishInterview, onNavigateHome }) =
 
   if (!interviewConfig && !isStarting) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200">
+      <div className="min-h-screen">
         <Navbar currentPage="interview" onNavigateToHome={onNavigateHome} />
         
         <section className="px-4 py-20 lg:py-24">
@@ -244,7 +244,7 @@ const InterviewPage = ({ interviewConfig, onFinishInterview, onNavigateHome }) =
 
   if (isStarting && isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200">
+      <div className="min-h-screen">
         <Navbar currentPage="interview" onNavigateToHome={onNavigateHome} />
         
         <section className="px-4 py-20 lg:py-24">
@@ -266,7 +266,7 @@ const InterviewPage = ({ interviewConfig, onFinishInterview, onNavigateHome }) =
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200">
+      <div className="min-h-screen">
         <Navbar currentPage="interview" onNavigateToHome={onNavigateHome} />
         
         <section className="px-4 py-20 lg:py-24">
@@ -309,7 +309,7 @@ const InterviewPage = ({ interviewConfig, onFinishInterview, onNavigateHome }) =
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200">
+    <div className="min-h-screen">
       <Navbar currentPage="interview" onNavigateToHome={onNavigateHome} />
       
       <section className="px-4 py-20 lg:py-24">
