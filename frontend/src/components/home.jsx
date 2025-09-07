@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown, Play, CheckCircle, Star, ArrowRight, Users, TrendingUp, Award } from 'lucide-react';
 import Navbar from './navbar';
 import Cards from './cards';
+import Footer from './footer';
 
 import img1 from "/feature-1.webp"
 import img2 from "/feature-2.jpg"
 import img3 from "/feature-3.jpg"
 import img4 from "/feature-4.jpg"
 
-const Home = () => {
+const Home = ({ onNavigateToSetup, onNavigateHome }) => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const shift = window.outerWidth > 782 ? 100 : 115;
 
@@ -45,7 +46,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
+      <Navbar currentPage="home" onNavigateToSetup={onNavigateToSetup} onNavigateToHome={onNavigateHome} />
       
       {/* Hero Section */}
       <section className="px-4 py-20 lg:py-24">
@@ -69,7 +70,10 @@ const Home = () => {
               
               <div className="flex flex-col gap-4">
                 <div className='flex flex-col space-y-2 lg:flex-row lg:space-x-2'>
-                  <button className="group bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/25 hover:-translate-y-1 flex items-center justify-center">
+                  <button 
+                    onClick={onNavigateToSetup}
+                    className="group bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-slate-900/25 hover:-translate-y-1 flex items-center justify-center"
+                  >
                   Start Free Practice
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
                   </button>
@@ -325,7 +329,10 @@ const Home = () => {
           <p className="text-[#251901] text-lg lg:text-xl mb-10 leading-relaxed">
             Join thousands of professionals who have improved their interview skills and landed their dream jobs.
           </p>
-          <button className="group bg-white hover:bg-gray-100 text-slate-900 px-10 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex items-center justify-center mx-auto">
+          <button 
+            onClick={onNavigateToSetup}
+            className="group bg-white hover:bg-gray-100 text-slate-900 px-10 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex items-center justify-center mx-auto"
+          >
             Start Practice Now
             <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
           </button>
@@ -334,65 +341,7 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-transparent border-t border-white/20 pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-8 mb-12">
-            <div className="md:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
-                <img 
-                  src="/logo.png" 
-                  alt="PrepTera Logo" 
-                  className="w-12 h-12 object-contain"
-                />
-                <span className="font-bold text-3xl bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent tracking-tight">PrepTera</span>
-              </div>
-              <p className="text-[#733501] mb-6 leading-relaxed max-w-md">
-                Empowering professionals worldwide to ace their interviews with AI-powered practice and feedback.
-              </p>
-            </div>
-
-            <div className='flex justify-between'>
-                          <div>
-              <h3 className="font-semibold text-black mb-4 text-lg">Product</h3>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">Features</a></li>
-                <li><a href="#" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">Pricing</a></li>
-                <li><a href="#" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">API</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-semibold text-black mb-4 text-lg">Company</h3>
-              <ul className="space-y-3">
-                <li><a href="#" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">About</a></li>
-                <li><a href="#" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">Contact</a></li>
-                <li><a href="#" className="ttext-gray-800 hover:text-gray-600 transition-colors duration-300">Privacy</a></li>
-              </ul>
-            </div>
-          </div>
-            </div>
-          
-          <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-white/20">
-            <p className="text-black text-sm">
-              © 2024 PrepTera. All rights reserved.
-            </p>
-            <div className="flex space-x-6 mt-4 sm:mt-0">
-              <a href="#" className="text-black hover:text-gray-600 transition-colors duration-300">
-                <span className="sr-only">Twitter</span>
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84"/>
-                </svg>
-              </a>
-              <a href="#" className="text-black hover:text-gray-600 transition-colors duration-300">
-                <span className="sr-only">GitHub</span>
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

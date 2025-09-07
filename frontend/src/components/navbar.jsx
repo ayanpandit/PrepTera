@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Navbar = () => {
+const Navbar = ({ currentPage, onNavigateToHome, onNavigateToSetup }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeItem, setActiveItem] = useState('Home');
@@ -15,9 +15,9 @@ const Navbar = () => {
   }, []);
 
   const navItems = [
-    { name: 'Home' },
+    { name: 'Home', onClick: onNavigateToHome },
+    { name: 'Setup', onClick: onNavigateToSetup },
     { name: 'Features' },
-    { name: 'Dashboard' },
     { name: 'About' },
     { name: 'Contact' }
   ];
@@ -62,8 +62,17 @@ const Navbar = () => {
                 {navItems.map((item, index) => (
                   <button
                     key={item.name}
-                    onClick={() => setActiveItem(item.name)}
-                    className={`scale-100 text-white hover:scale-125 hover:text-[#a400a4] transition-all duration-400 `}
+                    onClick={() => {
+                      setActiveItem(item.name);
+                      if (item.onClick) {
+                        item.onClick();
+                      }
+                    }}
+                    className={`scale-100 text-white hover:scale-125 hover:text-[#a400a4] transition-all duration-400 ${
+                      (currentPage === 'home' && item.name === 'Home') || 
+                      (currentPage === 'setup' && item.name === 'Setup') 
+                        ? 'text-[#a400a4]' : ''
+                    }`}
                     style={{ fontFamily: 'Outfit, sans-serif' }}
                   >
                     <span className="tracking-wide">{item.name}</span>
@@ -124,9 +133,13 @@ const Navbar = () => {
                 onClick={() => {
                   setActiveItem(item.name);
                   setIsMenuOpen(false);
+                  if (item.onClick) {
+                    item.onClick();
+                  }
                 }}
                 className={`w-full flex items-center px-4 py-3 rounded-full text-left transition-all duration-400 ${
-                  activeItem === item.name 
+                  (currentPage === 'home' && item.name === 'Home') || 
+                  (currentPage === 'setup' && item.name === 'Setup')
                     ? 'bg-blue-600/20 text-white border border-blue-500/30' 
                     : 'text-gray-300 hover:text-white hover:bg-gray-800/40'
                 }`}
