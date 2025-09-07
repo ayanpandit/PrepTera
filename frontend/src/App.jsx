@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Home from './components/home';
 import Setup from './pages/Setup';
+import InterviewPage from './pages/InterviewPage';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -12,6 +13,8 @@ function App() {
       const hash = window.location.hash.slice(1); // Remove the '#'
       if (hash === 'setup') {
         setCurrentPage('setup');
+      } else if (hash === 'interview') {
+        setCurrentPage('interview');
       } else {
         setCurrentPage('home');
       }
@@ -36,18 +39,30 @@ function App() {
     window.location.hash = '#home';
   };
 
+  const navigateToInterview = () => {
+    window.location.hash = '#interview';
+  };
+
   const handleStartInterview = (config) => {
     setInterviewConfig(config);
-    // Here you can navigate to the interview page in the future
-    console.log('Starting interview with config:', config);
-    // For now, just alert the user
-    alert(`Interview configured:\nRole: ${config.jobRole}\nDomain: ${config.domain}\nType: ${config.interviewType}\n\nThis will navigate to the interview page in the future.`);
+    navigateToInterview();
+  };
+
+  const handleFinishInterview = () => {
+    setInterviewConfig(null);
+    navigateToSetup();
   };
 
   const renderCurrentPage = () => {
     switch (currentPage) {
       case 'setup':
         return <Setup onStartInterview={handleStartInterview} onNavigateHome={navigateToHome} />;
+      case 'interview':
+        return <InterviewPage 
+          interviewConfig={interviewConfig} 
+          onFinishInterview={handleFinishInterview} 
+          onNavigateHome={navigateToHome} 
+        />;
       case 'home':
       default:
         return <Home onNavigateToSetup={navigateToSetup} onNavigateHome={navigateToHome} />;
