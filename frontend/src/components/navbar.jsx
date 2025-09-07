@@ -34,9 +34,9 @@ const Navbar = () => {
         />
       )}
 
-      <nav className="fixed left-0 right-0 z-50 mt-4 bg-transparent transition-all duration-500">
-        <div className="w-full flex justify-center relative">
-          <div className="max-w-3xl w-full">
+      <nav className="fixed left-0 right-0 z-50 mt-2 bg-transparent transition-all duration-500">
+        <div className="w-full p-2 flex justify-center relative">
+          <div className="xl:w-fit w-screen">
             <div className="flex items-center justify-center h-14 sm:h-16 lg:h-18 bg-gray-800/40 backdrop-blur-xl rounded-full px-6 sm:px-8 lg:px-12 border border-gray-700/30 shadow-xl">
               
               {/* Mobile/Tablet Logo and Name - Left side */}
@@ -50,22 +50,20 @@ const Navbar = () => {
               </div>
 
               {/* Desktop Navigation */}
-              <div className="hidden lg:flex items-center space-x-2">
+              <div className="hidden lg:flex items-center space-x-8">
                 {/* Logo before Home */}
-                <img 
-                  src="/logo.png" 
-                  alt="PrepTera Logo" 
-                  className="w-8 h-8 object-contain mr-4"
-                />
+                <div>
+                  <img 
+                    src="/logo.png" 
+                    alt="PrepTera Logo" 
+                    className="w-10 h-10 object-contain mr-4"
+                  />
+                </div>
                 {navItems.map((item, index) => (
                   <button
                     key={item.name}
                     onClick={() => setActiveItem(item.name)}
-                    className={`px-4 py-2 mx-0.5 rounded-full text-sm transition-all duration-400 hover:scale-105 ${
-                      activeItem === item.name 
-                        ? 'text-white bg-blue-600 shadow-lg' 
-                        : 'text-gray-300 hover:text-white hover:bg-gray-600/40'
-                    }`}
+                    className={`scale-100 text-white hover:scale-125 hover:text-[#a400a4] transition-all duration-400 `}
                     style={{ fontFamily: 'Outfit, sans-serif' }}
                   >
                     <span className="tracking-wide">{item.name}</span>
