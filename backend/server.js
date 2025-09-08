@@ -15,8 +15,29 @@ dotenv.config({ path: join(__dirname, '.env') });
 
 const app = express();
 
+// CORS Configuration
+const allowedOrigins = process.env.ALLOWED_ORIGINS 
+  ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+  : ['http://localhost:5173', 'http://localhost:3000'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -37,6 +58,15 @@ if (!GEMINI_API_KEY) {
 let sessions = {};
 
 // Health check endpoint
+app.get("/", (req, res) => {
+  res.json({ 
+    status: "PrepTera Backend API", 
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 app.get("/health", (req, res) => {
   res.json({ status: "OK", timestamp: new Date().toISOString() });
 });
@@ -53,8 +83,25 @@ app.post("/start", async (req, res) => {
 
     const sessionId = Date.now().toString();
 
-    // Create a more detailed prompt for better questions
-    const prompt = `You are an expert interviewer conducting a ${interviewType.toLowerCase()} interview for a ${jobRole} position in ${domain}. 
+    // Fallback questions in case API fails
+    const fallbackQuestions = [
+      "Tell me about yourself and your background.",
+      "Why are you interested in this position?",
+      "What are your greatest strengths?",
+      "Describe a challenging project you worked on.",
+      "How do you handle working under pressure?",
+      "What are your career goals for the next 5 years?",
+      "Tell me about a time you had to learn something new quickly.",
+      "How do you approach problem-solving?",
+      "Describe your experience working in a team.",
+      "Do you have any questions for us?"
+    ];
+
+    let questions = fallbackQuestions; // Start with fallback
+
+    try {
+      // Try to get questions from Gemini API
+      const prompt = `You are an expert interviewer conducting a ${interviewType.toLowerCase()} interview for a ${jobRole} position in ${domain}. 
 
 Generate exactly 10 high-quality, relevant interview questions. Each question should be:
 - Appropriate for the ${interviewType.toLowerCase()} interview type
@@ -64,41 +111,47 @@ Generate exactly 10 high-quality, relevant interview questions. Each question sh
 
 Format your response as a numbered list (1., 2., 3., etc.) with only the questions, no additional text or explanations.`;
 
-    const response = await fetch(GEMINI_API_URL, {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "X-goog-api-key": GEMINI_API_KEY
-      },
-      body: JSON.stringify({ 
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
+      const response = await fetch(GEMINI_API_URL, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "X-goog-api-key": GEMINI_API_KEY
+        },
+        body: JSON.stringify({ 
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.95,
+            maxOutputTokens: 1024,
+          }
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        
+        // Parse questions more reliably
+        const apiQuestions = text
+          .split(/\d+\.\s+/)
+          .filter(q => q.trim() !== "")
+          .map(q => q.trim())
+          .slice(0, 10); // Ensure we only get 10 questions
+
+        if (apiQuestions.length > 0) {
+          questions = apiQuestions; // Use API questions if available
+          console.log('Using AI-generated questions');
+        } else {
+          console.log('API returned empty questions, using fallback');
         }
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.log('API Error response:', errorText);
-      throw new Error(`Gemini API error: ${response.status} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
-    
-    // Parse questions more reliably
-    const questions = text
-      .split(/\d+\.\s+/)
-      .filter(q => q.trim() !== "")
-      .map(q => q.trim())
-      .slice(0, 10); // Ensure we only get 10 questions
-
-    if (questions.length === 0) {
-      throw new Error("Failed to generate questions from Gemini response");
+      } else {
+        const errorText = await response.text();
+        console.log('API Error response:', errorText);
+        console.log('Using fallback questions due to API error');
+      }
+    } catch (apiError) {
+      console.log('API call failed, using fallback questions:', apiError.message);
     }
 
     // Save session

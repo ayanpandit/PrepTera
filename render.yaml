@@ -1,0 +1,47 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: preptera-backend
+    runtime: node
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: GEMINI_API_KEY
+        sync: false  # Set this manually in Render dashboard
+      - key: ALLOWED_ORIGINS
+        value: https://preptera-frontend.onrender.com
+    healthCheckPath: /
+    rootDir: ./backend
+
+  # Frontend Static Site
+  - type: web
+    name: preptera-frontend
+    runtime: static
+    env: static
+    plan: free
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://preptera-backend.onrender.com
+      - key: VITE_APP_NAME
+        value: PrepTera
+      - key: VITE_APP_VERSION
+        value: 1.0.0
+      - key: VITE_ENABLE_VOICE_RECOGNITION
+        value: true
+      - key: VITE_ENABLE_ANALYTICS
+        value: true
+      - key: VITE_NODE_ENV
+        value: production
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    rootDir: ./frontend

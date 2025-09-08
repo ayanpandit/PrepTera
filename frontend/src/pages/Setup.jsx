@@ -4,6 +4,8 @@ import Navbar from '../components/navbar';
 import Footer from '../components/footer';
 
 const Setup = ({ onStartInterview, onNavigateHome }) => {
+  // State for user input fields
+  const [candidateName, setCandidateName] = useState(''); // Added: State for candidate name
   const [selectedJobRole, setSelectedJobRole] = useState('');
   const [selectedDomain, setSelectedDomain] = useState('');
   const [selectedInterviewType, setSelectedInterviewType] = useState('');
@@ -88,8 +90,9 @@ const Setup = ({ onStartInterview, onNavigateHome }) => {
   };
 
   const handleStartInterview = () => {
-    if (selectedJobRole && selectedDomain && selectedInterviewType) {
+    if (isFormValid) {
       const interviewConfig = {
+        candidateName: candidateName.trim(), // Updated: Include candidate name
         jobRole: selectedJobRole,
         domain: selectedDomain,
         interviewType: selectedInterviewType
@@ -98,7 +101,8 @@ const Setup = ({ onStartInterview, onNavigateHome }) => {
     }
   };
 
-  const isFormValid = selectedJobRole && selectedDomain && selectedInterviewType;
+  // Updated: Include name validation
+  const isFormValid = candidateName.trim() && selectedJobRole && selectedDomain && selectedInterviewType;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-orange-100 to-orange-200">
@@ -126,6 +130,20 @@ const Setup = ({ onStartInterview, onNavigateHome }) => {
           {/* Setup Form */}
           <div className="bg-white/60 backdrop-blur-xl border border-white/30 rounded-2xl p-8 lg:p-12 shadow-xl">
             <div className="space-y-8">
+              
+              {/* Name Input Field - Added: Personal greeting functionality */}
+              <div className="space-y-3">
+                <label className="block text-lg font-semibold text-slate-900 mb-2">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  value={candidateName}
+                  onChange={(e) => setCandidateName(e.target.value)}
+                  placeholder="Enter your name..."
+                  className="w-full bg-white/80 backdrop-blur-sm border border-slate-300 rounded-xl px-6 py-4 text-slate-900 font-medium placeholder-slate-500 hover:bg-white/90 hover:border-slate-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500"
+                />
+              </div>
               
               {/* Job Role Selection */}
               <div className="space-y-3">
@@ -278,6 +296,10 @@ const Setup = ({ onStartInterview, onNavigateHome }) => {
                 <div className="bg-orange-50/80 backdrop-blur-sm border border-orange-200 rounded-xl p-6 animate-in slide-in-from-bottom-4 duration-300">
                   <h3 className="font-semibold text-lg text-slate-900 mb-3">Interview Configuration</h3>
                   <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-600">Candidate:</span>
+                      <span className="text-slate-900 font-medium">{candidateName}</span>
+                    </div>
                     <div className="flex justify-between">
                       <span className="text-slate-600">Job Role:</span>
                       <span className="text-slate-900 font-medium">{selectedJobRole}</span>
