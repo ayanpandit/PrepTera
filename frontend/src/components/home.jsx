@@ -22,25 +22,25 @@ const Home = ({ onNavigateToSetup, onNavigateHome }) => {
 
   const testimonials = [
     {
-      name: "Sarah Chen",
+      name: "Gaurav Taneja",
       role: "Software Engineer",
-      company: "Google",
+      company: "ConvexAI",
       content: "This AI interview prep tool is a game-changer! The role-specific questions and real-time feedback helped me identify areas for improvement. I felt much more confident going into my actual interview.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b667b16b?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+      image: "/testimonial-1.png"
     },
     {
-      name: "Marcus Johnson",
+      name: "Divyanshu Chaurasia",
       role: "Product Manager",
-      company: "Meta",
+      company: "Gamma",
       content: "I was skeptical at first, but this AI tool exceeded my expectations. The technical questions were challenging and the final report provided valuable insights into my performance.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+      image: "/testimonial-2.png"
     },
     {
-      name: "Emily Rodriguez",
+      name: "Adarsh Bhatnagar",
       role: "Data Scientist",
       company: "Microsoft",
       content: "As a recent graduate, I found this AI interview assistant incredibly helpful. The behavioral questions were spot-on and the instant feedback made the practice process engaging and effective.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80"
+      image: "/testimonial-3.png"
     }
   ];
 

@@ -3,8 +3,9 @@ import React from 'react';
 const Footer = () => {
   return (
     <footer id="contact" className="bg-transparent border-t border-white/20 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-8 mb-12">
+      <div className=" flex flex-col max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row justify-between gap-8 mb-12">
+
           <div className="md:col-span-2">
             <div className="flex items-center space-x-3 mb-6">
               <img 
@@ -19,7 +20,8 @@ const Footer = () => {
             </p>
           </div>
 
-          <div className='flex justify-between'>
+          <div className='flex lg:w-1/4 justify-between'>
+
             <div>
               <h3 className="font-semibold text-black mb-4 text-lg">Product</h3>
               <ul className="space-y-3">
@@ -37,6 +39,7 @@ const Footer = () => {
                 <li><a href="#" className="text-gray-800 hover:text-gray-600 transition-colors duration-300">Privacy</a></li>
               </ul>
             </div>
+
           </div>
         </div>
         
