@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logoImg from '../assets/logo.png';
 
 const Navbar = ({ currentPage, onNavigateToHome, onNavigateToSetup }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,7 +43,7 @@ const Navbar = ({ currentPage, onNavigateToHome, onNavigateToSetup }) => {
               {/* Mobile/Tablet Logo and Name - Left side */}
               <div className="flex lg:hidden items-center space-x-3 flex-1">
                 <img 
-                  src="/logo.png" 
+                  src={logoImg}
                   alt="PrepTera Logo" 
                   className="w-8 h-8 object-contain"
                 />
@@ -54,7 +55,7 @@ const Navbar = ({ currentPage, onNavigateToHome, onNavigateToSetup }) => {
                 {/* Logo before Home */}
                 <div>
                   <img 
-                    src="/logo.png" 
+                    src={logoImg}
                     alt="PrepTera Logo" 
                     className="w-10 h-10 object-contain mr-4"
                   />
